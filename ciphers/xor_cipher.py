@@ -1,186 +1,182 @@
 """
-	author: Christian Bender
-	date: 21.12.2017
-	class: XORCipher
+        author: Christian Bender
+        date: 21.12.2017
+        class: XORCipher
 
-	This class implements the XOR-cipher algorithm and provides
-	some useful methods for encrypting and decrypting strings and
-	files.
+        This class implements the XOR-cipher algorithm and provides
+        some useful methods for encrypting and decrypting strings and
+        files.
 
-	Overview about methods
+        Overview about methods
 
-	- encrypt : list of char
-	- decrypt : list of char
-	- encrypt_string : str
-	- decrypt_string : str
-	- encrypt_file : boolean
-	- decrypt_file : boolean
+        - encrypt : list of char
+        - decrypt : list of char
+        - encrypt_string : str
+        - decrypt_string : str
+        - encrypt_file : boolean
+        - decrypt_file : boolean
 """
+
+
 class XORCipher(object):
+    def __init__(self, key=0):
+        """
+                        simple constructor that receives a key or uses
+                        default key = 0
+                """
 
-	def __init__(self, key = 0):
-		"""
-			simple constructor that receives a key or uses
-			default key = 0
-		"""
+        # private field
+        self.__key = key
 
-		#private field
-		self.__key = key
+    def encrypt(self, content, key):
+        """
+                        input: 'content' of type string and 'key' of type int
+                        output: encrypted string 'content' as a list of chars
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
-	def encrypt(self, content, key):
-		"""
-			input: 'content' of type string and 'key' of type int
-			output: encrypted string 'content' as a list of chars
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+        # precondition
+        assert isinstance(key, int) and isinstance(content, str)
 
-		# precondition
-		assert (isinstance(key,int) and isinstance(content,str))
+        key = key or self.__key or 1
 
-		key = key or self.__key or 1
+        # make sure key can be any size
+        while key > 255:
+            key -= 255
 
-		# make sure key can be any size
-		while (key > 255):
-			key -= 255
+        # This will be returned
+        ans = []
 
-		# This will be returned
-		ans = []
+        for ch in content:
+            ans.append(chr(ord(ch) ^ key))
 
-		for ch in content:
-			ans.append(chr(ord(ch) ^ key))
+        return ans
 
-		return ans
+    def decrypt(self, content, key):
+        """
+                        input: 'content' of type list and 'key' of type int
+                        output: decrypted string 'content' as a list of chars
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
-	def decrypt(self,content,key):
-		"""
-			input: 'content' of type list and 'key' of type int
-			output: decrypted string 'content' as a list of chars
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+        # precondition
+        assert isinstance(key, int) and isinstance(content, list)
 
-		# precondition
-		assert (isinstance(key,int) and isinstance(content,list))
+        key = key or self.__key or 1
 
-		key = key or self.__key or 1
+        # make sure key can be any size
+        while key > 255:
+            key -= 255
 
-		# make sure key can be any size
-		while (key > 255):
-			key -= 255
+        # This will be returned
+        ans = []
 
-		# This will be returned
-		ans = []
+        for ch in content:
+            ans.append(chr(ord(ch) ^ key))
 
-		for ch in content:
-			ans.append(chr(ord(ch) ^ key))
+        return ans
 
-		return ans
+    def encrypt_string(self, content, key=0):
+        """
+                        input: 'content' of type string and 'key' of type int
+                        output: encrypted string 'content'
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
+        # precondition
+        assert isinstance(key, int) and isinstance(content, str)
 
-	def encrypt_string(self,content, key = 0):
-		"""
-			input: 'content' of type string and 'key' of type int
-			output: encrypted string 'content'
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+        key = key or self.__key or 1
 
-		# precondition
-		assert (isinstance(key,int) and isinstance(content,str))
+        # make sure key can be any size
+        while key > 255:
+            key -= 255
 
-		key = key or self.__key or 1
+        # This will be returned
+        ans = ""
 
-		# make sure key can be any size
-		while (key > 255):
-			key -= 255
+        for ch in content:
+            ans += chr(ord(ch) ^ key)
 
-		# This will be returned
-		ans = ""
+        return ans
 
-		for ch in content:
-			ans += chr(ord(ch) ^ key)
+    def decrypt_string(self, content, key=0):
+        """
+                        input: 'content' of type string and 'key' of type int
+                        output: decrypted string 'content'
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
-		return ans
+        # precondition
+        assert isinstance(key, int) and isinstance(content, str)
 
-	def decrypt_string(self,content,key = 0):
-		"""
-			input: 'content' of type string and 'key' of type int
-			output: decrypted string 'content'
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+        key = key or self.__key or 1
 
-		# precondition
-		assert (isinstance(key,int) and isinstance(content,str))
+        # make sure key can be any size
+        while key > 255:
+            key -= 255
 
-		key = key or self.__key or 1
+        # This will be returned
+        ans = ""
 
-		# make sure key can be any size
-		while (key > 255):
-			key -= 255
+        for ch in content:
+            ans += chr(ord(ch) ^ key)
 
-		# This will be returned
-		ans = ""
-		
-		for ch in content:
-			ans += chr(ord(ch) ^ key)
+        return ans
 
-		return ans
+    def encrypt_file(self, file, key=0):
+        """
+                        input: filename (str) and a key (int)
+                        output: returns true if encrypt process was
+                        successful otherwise false
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
+        # precondition
+        assert isinstance(file, str) and isinstance(key, int)
 
-	def encrypt_file(self, file, key = 0):
-		"""
-			input: filename (str) and a key (int)
-			output: returns true if encrypt process was
-			successful otherwise false
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+        try:
+            with open(file, "r") as fin:
+                with open("encrypt.out", "w+") as fout:
 
-		#precondition
-		assert (isinstance(file,str) and isinstance(key,int))
+                    # actual encrypt-process
+                    for line in fin:
+                        fout.write(self.encrypt_string(line, key))
 
-		try:
-			with open(file,"r") as fin:
-				with open("encrypt.out","w+") as fout:
+        except:
+            return False
 
-					# actual encrypt-process
-					for line in fin:
-						fout.write(self.encrypt_string(line,key))
+        return True
 
-		except:
-			return False
+    def decrypt_file(self, file, key):
+        """
+                        input: filename (str) and a key (int)
+                        output: returns true if decrypt process was
+                        successful otherwise false
+                        if key not passed the method uses the key by the constructor.
+                        otherwise key = 1
+                """
 
-		return True
+        # precondition
+        assert isinstance(file, str) and isinstance(key, int)
 
+        try:
+            with open(file, "r") as fin:
+                with open("decrypt.out", "w+") as fout:
 
-	def decrypt_file(self,file, key):
-		"""
-			input: filename (str) and a key (int)
-			output: returns true if decrypt process was
-			successful otherwise false
-			if key not passed the method uses the key by the constructor.
-			otherwise key = 1
-		"""
+                    # actual encrypt-process
+                    for line in fin:
+                        fout.write(self.decrypt_string(line, key))
 
-		#precondition
-		assert (isinstance(file,str) and isinstance(key,int))
+        except:
+            return False
 
-		try:
-			with open(file,"r") as fin:
-				with open("decrypt.out","w+") as fout:
-
-					# actual encrypt-process
-					for line in fin:
-						fout.write(self.decrypt_string(line,key))
-
-		except:
-			return False
-
-		return True
-
-
+        return True
 
 
 # Tests
@@ -188,22 +184,22 @@ class XORCipher(object):
 # key = 67
 
 # # test enrcypt
-# print crypt.encrypt("hallo welt",key)
+# print(crypt.encrypt("hallo welt",key))
 # # test decrypt
-# print crypt.decrypt(crypt.encrypt("hallo welt",key), key)
+# print(crypt.decrypt(crypt.encrypt("hallo welt",key), key))
 
 # # test encrypt_string
-# print crypt.encrypt_string("hallo welt",key)
+# print(crypt.encrypt_string("hallo welt",key))
 
 # # test decrypt_string
-# print crypt.decrypt_string(crypt.encrypt_string("hallo welt",key),key)
+# print(crypt.decrypt_string(crypt.encrypt_string("hallo welt",key),key))
 
 # if (crypt.encrypt_file("test.txt",key)):
-# 	print "encrypt successful"
+#       print("encrypt successful")
 # else:
-# 	print "encrypt unsuccessful"
+#       print("encrypt unsuccessful")
 
 # if (crypt.decrypt_file("encrypt.out",key)):
-# 	print "decrypt successful"
+#       print("decrypt successful")
 # else:
-# 	print "decrypt unsuccessful"
+#       print("decrypt unsuccessful")
