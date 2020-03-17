@@ -4,7 +4,7 @@ start_time = time.time()
 print("creating word list...")
 path = os.path.split(os.path.realpath(__file__))
 with open(path[0] + "/words") as f:
-    word_list = sorted(list(set([word.strip().lower() for word in f])))
+    word_list = sorted(list({word.strip().lower() for word in f}))
 
 
 def signature(word):
@@ -16,8 +16,8 @@ for word in word_list:
     word_bysig[signature(word)].append(word)
 
 
-def anagram(myword):
-    return word_bysig[signature(myword)]
+def anagram(my_word):
+    return word_bysig[signature(my_word)]
 
 
 print("finding anagrams...")

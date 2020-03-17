@@ -18,7 +18,7 @@
 """
 
 
-class XORCipher(object):
+class XORCipher:
     def __init__(self, key=0):
         """
                         simple constructor that receives a key or uses
@@ -148,7 +148,7 @@ class XORCipher(object):
                     for line in fin:
                         fout.write(self.encrypt_string(line, key))
 
-        except:
+        except IOError:
             return False
 
         return True
@@ -173,7 +173,7 @@ class XORCipher(object):
                     for line in fin:
                         fout.write(self.decrypt_string(line, key))
 
-        except:
+        except IOError:
             return False
 
         return True

@@ -47,7 +47,7 @@ class Automaton:
                 q.append(child)
                 state = self.adlist[r]["fail_state"]
                 while (
-                    self.find_next_state(state, self.adlist[child]["value"]) == None
+                    self.find_next_state(state, self.adlist[child]["value"]) is None
                     and state != 0
                 ):
                     state = self.adlist[state]["fail_state"]
@@ -67,7 +67,7 @@ class Automaton:
         >>> A.search_in("whatever, err ... , wherever")
         {'what': [0], 'hat': [1], 'ver': [5, 25], 'er': [6, 10, 22, 26]}
         """
-        result = dict()  # returns a dict with keywords and list of its occurences
+        result = dict()  # returns a dict with keywords and list of its occurrences
         current_state = 0
         for i in range(len(string)):
             while (
@@ -82,7 +82,7 @@ class Automaton:
                 for key in self.adlist[current_state]["output"]:
                     if not (key in result):
                         result[key] = []
-                    result[key].append((i - len(key) + 1))
+                    result[key].append(i - len(key) + 1)
         return result
 
 

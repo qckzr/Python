@@ -2,7 +2,7 @@
 Sum of digits sequence
 Problem 551
 
-Let a(0), a(1),... be an interger sequence defined by:
+Let a(0), a(1),... be an integer sequence defined by:
      a(0) = 1
      for n >= 1, a(n) is the sum of the digits of all preceding terms
 
@@ -33,7 +33,7 @@ def next_term(a_i, k, i, n):
     k --  k when terms are written in the from a(i) = b*10^k + c.
           Term are calulcated until c > 10^k or the n-th term is reached.
     i -- position along the sequence
-    n -- term to caluclate up to if k is large enough
+    n -- term to calculate up to if k is large enough
 
     Return: a tuple of difference between ending term and starting term, and
     the number of terms calculated. ex. if starting term is a_0=1, and
@@ -52,10 +52,10 @@ def next_term(a_i, k, i, n):
 
     sub_memo = memo.get(ds_b)
 
-    if sub_memo != None:
+    if sub_memo is not None:
         jumps = sub_memo.get(c)
 
-        if jumps != None and len(jumps) > 0:
+        if jumps is not None and len(jumps) > 0:
             # find and make the largest jump without going over
             max_jump = -1
             for _k in range(len(jumps) - 1, -1, -1):

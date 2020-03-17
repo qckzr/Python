@@ -3,15 +3,15 @@
 Hill Cipher:
 The below defined class 'HillCipher' implements the Hill Cipher algorithm.
 The Hill Cipher is an algorithm that implements modern linear algebra techniques
-In this algortihm, you have an encryption key matrix. This is what will be used
+In this algorithm, you have an encryption key matrix. This is what will be used
 in encoding and decoding your text.
 
-Algortihm:
+Algorithm:
 Let the order of the encryption key be N (as it is a square matrix).
 Your text is divided into batches of length N and converted to numerical vectors
 by a simple mapping starting with A=0 and so on.
 
-The key is then mulitplied with the newly created batch vector to obtain the
+The key is then multiplied with the newly created batch vector to obtain the
 encoded vector. After each multiplication modular 36 calculations are performed
 on the vectors so as to bring the numbers between 0 and 36 and then mapped with
 their corresponding alphanumerics.
@@ -65,11 +65,11 @@ class HillCipher:
         encrypt_key is an NxN numpy matrix
         """
         self.encrypt_key = self.modulus(encrypt_key)  # mod36 calc's on the encrypt key
-        self.checkDeterminant()  # validate the determinant of the encryption key
+        self.check_determinant()  # validate the determinant of the encryption key
         self.decrypt_key = None
         self.break_key = encrypt_key.shape[0]
 
-    def checkDeterminant(self):
+    def check_determinant(self):
         det = round(numpy.linalg.det(self.encrypt_key))
 
         if det < 0:
@@ -78,12 +78,12 @@ class HillCipher:
         req_l = len(self.key_string)
         if gcd(det, len(self.key_string)) != 1:
             raise ValueError(
-                "discriminant modular {0} of encryption key({1}) is not co prime w.r.t {2}.\nTry another key.".format(
+                "discriminant modular {} of encryption key({}) is not co prime w.r.t {}.\nTry another key.".format(
                     req_l, det, req_l
                 )
             )
 
-    def processText(self, text):
+    def process_text(self, text):
         text = list(text.upper())
         text = [char for char in text if char in self.key_string]
 
@@ -94,7 +94,7 @@ class HillCipher:
         return "".join(text)
 
     def encrypt(self, text):
-        text = self.processText(text.upper())
+        text = self.process_text(text.upper())
         encrypted = ""
 
         for i in range(0, len(text) - self.break_key + 1, self.break_key):
@@ -109,7 +109,7 @@ class HillCipher:
 
         return encrypted
 
-    def makeDecryptKey(self):
+    def make_decrypt_key(self):
         det = round(numpy.linalg.det(self.encrypt_key))
 
         if det < 0:
@@ -129,8 +129,8 @@ class HillCipher:
         return self.toInt(self.modulus(inv_key))
 
     def decrypt(self, text):
-        self.decrypt_key = self.makeDecryptKey()
-        text = self.processText(text.upper())
+        self.decrypt_key = self.make_decrypt_key()
+        text = self.process_text(text.upper())
         decrypted = ""
 
         for i in range(0, len(text) - self.break_key + 1, self.break_key):
