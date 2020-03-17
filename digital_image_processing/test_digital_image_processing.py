@@ -8,19 +8,27 @@ import digital_image_processing.filters.median_filter as med
 import digital_image_processing.filters.sobel_filter as sob
 import digital_image_processing.filters.convolve as conv
 import digital_image_processing.change_contrast as cc
+import digital_image_processing.convert_to_negative as cn
 from cv2 import imread, cvtColor, COLOR_BGR2GRAY
 from numpy import array, uint8
 from PIL import Image
 
-img = imread(r"digital_image_processing/image_data/lena.jpg")
+img = imread(r"digital_image_processing/image_data/lena_small.jpg")
 gray = cvtColor(img, COLOR_BGR2GRAY)
+
+# Test: convert_to_negative()
+def test_convert_to_negative():
+    negative_img = cn.convert_to_negative(img)
+    # assert negative_img array for at least one True
+    assert negative_img.any()
+
 
 # Test: change_contrast()
 def test_change_contrast():
-    with Image.open("digital_image_processing/image_data/lena.jpg") as img:
+    with Image.open("digital_image_processing/image_data/lena_small.jpg") as img:
         # Work around assertion for response
         assert str(cc.change_contrast(img, 110)).startswith(
-            "<PIL.Image.Image image mode=RGB size=512x512 at"
+            "<PIL.Image.Image image mode=RGB size=100x100 at"
         )
 
 
@@ -33,7 +41,7 @@ def test_gen_gaussian_kernel():
 
 # canny.py
 def test_canny():
-    canny_img = imread("digital_image_processing/image_data/lena.jpg", 0)
+    canny_img = imread("digital_image_processing/image_data/lena_small.jpg", 0)
     # assert ambiguos array for all == True
     assert canny_img.all()
     canny_array = canny.canny(canny_img)
